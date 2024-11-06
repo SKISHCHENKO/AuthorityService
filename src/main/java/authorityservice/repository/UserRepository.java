@@ -3,7 +3,10 @@ package authorityservice.repository;
 import authorityservice.authorities.Authorities;
 import org.springframework.stereotype.Repository;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
@@ -26,9 +29,6 @@ public class UserRepository {
     }
 
     public List<Authorities> getUserAuthorities(String user, String password) {
-
-        user = user.replace("<", "").replace(">", "");
-        password = password.replace("<", "").replace(">", "");
 
         String storedPassword = authorities.get(user);
 

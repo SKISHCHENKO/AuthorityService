@@ -3,8 +3,8 @@ package authorityservice.service;
 import authorityservice.authorities.Authorities;
 import authorityservice.exception.InvalidCredentials;
 import authorityservice.exception.UnauthorizedUser;
+import authorityservice.model.User;
 import authorityservice.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,28 +13,18 @@ import java.util.List;
 public class AuthorizationService {
     private final UserRepository userRepository;
 
-    @Autowired
     public AuthorizationService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-   public List<Authorities> getAuthorities(String user, String password) {
-        if (isEmpty(user) || isEmpty(password)) {
+    public List<Authorities> getAuthorities(User user) {
+        if (user.getUser() == null || user.getPassword() == null) {
             throw new InvalidCredentials("User name or password is empty");
         }
-
-        List<Authorities> userAuthorities = userRepository.getUserAuthorities(user, password);
-        if (isEmpty(userAuthorities)) {
-            throw new UnauthorizedUser("Unknown user " + user);
+        List<Authorities> userAuthorities = userRepository.getUserAuthorities(user.getUser(), user.getPassword());
+        if (userAuthorities == null || userAuthorities.isEmpty()) {
+            throw new UnauthorizedUser("Unknown user " + user.getUser());
         }
         return userAuthorities;
-    }
-
-    private boolean isEmpty(String str) {
-        return str == null || str.isEmpty();
-    }
-
-    private boolean isEmpty(List<?> str) {
-        return str == null || str.isEmpty();
     }
 }
