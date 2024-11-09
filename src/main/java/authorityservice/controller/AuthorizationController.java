@@ -22,4 +22,5 @@ public class AuthorizationController {
     public List<Authorities> getAuthorities(@Valid User user) {
         return service.getAuthorities(user);
     }
+
 }
